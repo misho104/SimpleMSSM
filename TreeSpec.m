@@ -63,6 +63,7 @@ SMparameterSetByHand[] :=
   (* For simplicity, we use following values. *)
   smbyhand["v"]  = 246 // N;
   smbyhand["sw"] = Sqrt[0.23116];
+  smbyhand["mm"] = 0.105658365;
   smbyhand];
 
 SMparameter[slha_] :=
@@ -75,6 +76,8 @@ SMparameter[slha_] :=
   smbyhand = SMparameterSetByHand[];
   sm["v"]  = smbyhand["v"];
   sm["sw"] = smbyhand["sw"];
+  sm["mm"] = smbyhand["mm"];
+
   sm["cw"] = Sqrt[1-sm["sw"]^2];
   {ainvY0, ainvW0, ainvS0} = {ainv * sm["cw"]^2, ainv * sm["sw"]^2, 1/as };
   sm["mZ"] = mz;
@@ -85,6 +88,7 @@ SMparameter[slha_] :=
   sm["yt"] = Function[{Q}, Sqrt[2] * mt / sm["v"] * (1 - sm["g3"][Q]^2 / (3 \[Pi]^2))]; (* One-loop simple conversion *)
   sm["yb"] = Function[{Q}, Sqrt[2] * mb / sm["v"]];
   sm["ya"] = Function[{Q}, Sqrt[2] * mtau / sm["v"]]; (* calculated from pole mass; quantum correction ignored. *)
+  sm["ym"] = Function[{Q}, Sqrt[2] * sm["mm"] / sm["v"]]; (* calculated from pole mass; quantum correction ignored. *)
   sm];
 
 (* Neutralino mass diagonalization : N s.t. Diag = N^* M N^dagger *)
@@ -174,6 +178,7 @@ MSSMparameter[slha_, sm_] := Module[
     p["At"]   = Module[{k}, k = SLHA`Data[slha, "EXTPAR", 11]; If[k === Null, SLHA`GetData[slha, "MINPAR", 5], k]] // N;
     p["Ab"]   = Module[{k}, k = SLHA`Data[slha, "EXTPAR", 12]; If[k === Null, SLHA`GetData[slha, "MINPAR", 5], k]] // N;
     p["Aa"]   = Module[{k}, k = SLHA`Data[slha, "EXTPAR", 13]; If[k === Null, SLHA`GetData[slha, "MINPAR", 5], k]] // N;
+    p["Am"]   = 0;
     Do[
         p["LL",i] = Module[{k}, k = SLHA`Data[slha, "EXTPAR", 30+i]; If[k === Null, SLHA`GetData[slha, "MINPAR", 1], k]] // N;
         p["ER",i] = Module[{k}, k = SLHA`Data[slha, "EXTPAR", 33+i]; If[k === Null, SLHA`GetData[slha, "MINPAR", 1], k]] // N;
