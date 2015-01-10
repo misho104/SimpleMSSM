@@ -1,0 +1,28 @@
+#!/bin/bash
+# -*- Mathematica -*-
+# MathematicaScript and MathKernel 9 have a bug that prevents output sent
+# from a Mathematica script to stdout from being catched on a pipe or
+# redirected to a file. This workaround runs the script inline into a
+# MathKernel session.
+# See http://mathematica.stackexchange.com/questions/20954/
+ARG=`perl -e '$,=",";print map{qq/"$_"/}@ARGV' -- "$0" "$@"`
+MathKernel -noinit -noprompt -run "\$MyCommandLine={$ARG}; $(sed '1,/^exit/d' $0) ; Exit[]"
+exit $?
+
+Needs["SLHA`",     FileNameJoin[{Directory[], DirectoryName[$MyCommandLine[[1]]], "..", "SLHA.m"}]];
+Needs["TreeSpec`", FileNameJoin[{Directory[], DirectoryName[$MyCommandLine[[1]]], "TreeSpec.m"}]];
+
+Global::InvalidArguments = "Input/Output file not specified. (Usage: " <> $MyCommandLine[[1]] <> " inputfile outputfile)";
+Global::FileNotFound = "File `1` not found.";
+
+$MyCommandLine = If[$ScriptCommandLine == {}, $MyCommandLine, $ScriptCommandLine];
+
+If[Length[$MyCommandLine] != 3, Message[Global::InvalidArguments]; Abort[]; ]
+IFile = $MyCommandLine[[2]];
+OFile = $MyCommandLine[[3]];
+If[Not[FileExistsQ[IFile]], Message[Global::FileNotFound, IFile]; Abort[]; ]
+ISLHA = ReadSLHA[IFile];
+CalculateSpectrum[ISLHA, OFile];
+Exit[];
+
+
