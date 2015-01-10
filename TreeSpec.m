@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-10 17:56:31 misho> *)
+(* Time-Stamp: <2015-01-10 19:45:27 misho> *)
 
 (* :Context: TreeSpec` *)
 
@@ -12,7 +12,7 @@
 
 (* :Copyright: 2015 Sho Iwamoto *)
 
-(* :Package Version: 1.0 $Revision: 0.1 $, $Date: 2013/10/03 15:04:12 $ *)
+(* :Package Version: 1.0 $Revision: 0.1 $ *)
 
 (* :Mathematica Version: 9.0 *)
 
@@ -58,30 +58,34 @@ If[Not[MemberQ[$Packages, "SLHA`"]], Message[CalculateSpectrum::SLHANotLoaded]; 
 
 (* SM parameters *)
 
+SMparameterSetByHand[] :=
+  Module[ {smbyhand},
+  (* For simplicity, we use following values. *)
+  smbyhand["v"]  = 246 // N;
+  smbyhand["sw"] = Sqrt[0.23116];
+  smbyhand];
+
 SMparameter[slha_] :=
-  Module[ {sm,
+  Module[ {sm, smbyhand,
            ainv, gf, as, mz, mb, mt, mtau,
            sinw, w, v,
            ainvY0, ainvW0, ainvS0},
   {ainv, gf, as, mz, mb, mt, mtau} = SLHA`GetData[slha, "SMINPUTS", #] & /@ {1,2,3,4,5,6,7};
 
-  (* For simplicity, we use following values. *)
-  sinw = Sqrt[0.23116];
-  v    = 246 // N;
-  w = ArcSin[sinw];
-  {ainvY0, ainvW0, ainvS0} = {ainv * Cos[w]^2, ainv * Sin[w]^2, 1/as };
-  sm["v"]  = v;
+  smbyhand = SMparameterSetByHand[];
+  sm["v"]  = smbyhand["v"];
+  sm["sw"] = smbyhand["sw"];
+  sm["cw"] = Sqrt[1-sm["sw"]^2];
+  {ainvY0, ainvW0, ainvS0} = {ainv * sm["cw"]^2, ainv * sm["sw"]^2, 1/as };
   sm["mZ"] = mz;
-  sm["mW"] = mz * Cos[w];
-  sm["sw"] = Sin[w];
-  sm["cw"] = Cos[w];
+  sm["mW"] = mz * sm["cw"];
   sm["gY"] = Function[{Q}, Sqrt[ 4\[Pi] / (ainvY0 - (41/6) Log[Q/mz] / (2\[Pi]) )]];
   sm["g2"] = Function[{Q}, Sqrt[ 4\[Pi] / (ainvW0 + (19/6) Log[Q/mz] / (2\[Pi]) )]];
   sm["g3"] = Function[{Q}, Sqrt[ 4\[Pi] / (ainvS0 + (7)    Log[Q/mz] / (2\[Pi]) )]];
-  sm["yt"] = Function[{Q}, Sqrt[2] * mt / v * (1 - sm["g3"][Q]^2 / (3 \[Pi]^2))]; (* One-loop simple conversion *)
-  sm["yb"] = Function[{Q}, Sqrt[2] * mb / v];
-  sm["ya"] = Function[{Q}, Sqrt[2] * mtau / v]; (* calculated from pole mass; quantum correction ignored. *)
-  sm]
+  sm["yt"] = Function[{Q}, Sqrt[2] * mt / sm["v"] * (1 - sm["g3"][Q]^2 / (3 \[Pi]^2))]; (* One-loop simple conversion *)
+  sm["yb"] = Function[{Q}, Sqrt[2] * mb / sm["v"]];
+  sm["ya"] = Function[{Q}, Sqrt[2] * mtau / sm["v"]]; (* calculated from pole mass; quantum correction ignored. *)
+  sm];
 
 (* Neutralino mass diagonalization : N s.t. Diag = N^* M N^dagger *)
 AutomneTakagi[m_] := Module[{v, p, x},
