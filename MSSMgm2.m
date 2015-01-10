@@ -187,12 +187,12 @@ a\[Mu]MSSMSLHA[slha_]:=a\[Mu]MSSM[Replace[GetSoftParams[slha],(A\[Mu]->Null)->(A
 
 
 (* ::Input:: *)
-(*{t,u,m,e}={10,200,150,300};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,25.0}*)
-(*{t,u,m,e}={10,200,450,120};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,25.9}*)
-(*{t,u,m,e}={10,800,150,200};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,27.1}*)
-(*{t,u,m,e}={10,800,500,150};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,24.7}*)
-(*{t,u,m,e}={50,800,150,550};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,26.3}*)
-(*{t,u,m,e}={50,800,900,280};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,27.7}*)
+(*{t,u,m,e}={10,200,150,300};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,25.0} (*24.2124, 26.2952, 25.0*)*)
+(*{t,u,m,e}={10,200,450,120};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,25.9} (*24.7479, 24.9061, 25.9*)*)
+(*{t,u,m,e}={10,800,150,200};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,27.1} (*27.7691, 27.9210, 27.1*)*)
+(*{t,u,m,e}={10,800,500,150};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,24.7} (*26.0046, 26.4517, 24.7*)*)
+(*{t,u,m,e}={50,800,150,550};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,26.3} (*25.8154, 26.0260, 26.3*)*)
+(*{t,u,m,e}={50,800,900,280};params=Sequence[0.5m,m,t,u,e+0.1,e,e-0.1];{a\[Mu]MSSMt[params]*10^10,a\[Mu]MSSMit[params]*10^10,27.7} (*27.9501, 27.9876, 27.7*)*)
 (**)
 
 
