@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-10 19:45:27 misho> *)
+(* Time-Stamp: <2015-01-10 21:49:31 misho> *)
 
 (* :Context: TreeSpec` *)
 
@@ -28,7 +28,9 @@ BeginPackage["TreeSpec`"];
 
 (* Usage messages *)
 
-NeutralinoDiagonalize::usage = "\!\(\*RowBox[{\"NeutralinoDiagonalize\",\"[\",StyleBox[\"m\",\"TI\"],\"]\"}]\) diagonalizes a \*StyleBox[\"complex\",Bold] symmetric matrix \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) by Automne-Takagi factorization, giving a list of matrices \!\(\*RowBox[{\"{\",RowBox[{StyleBox[\"d\",\"TI\"],\",\",StyleBox[\"N\",\"TI\"]}],\"}\"}]\), where \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) is a \*StyleBox[\"real\",Bold] diagonal matrix with \!\(\*RowBox[{RowBox[{\"Abs\",\"[\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"i\",\"TI\"],StyleBox[\"i\",\"TI\"]}]\),\"]\"}],\"<\",RowBox[{\"Abs\",\"[\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"j\",\"TI\"],StyleBox[\"j\",\"TI\"]}]\),\"]\"}]}]\) for \!\(\*RowBox[{StyleBox[\"i\",\"TI\"],\"<\",StyleBox[\"j\",\"TI\"]}]\), and \!\(\*RowBox[{StyleBox[\"N\",\"TI\"]}]\) is the NMIX matrix in SLHA convention, i.e., \!\(\*RowBox[{StyleBox[\"d\",\"TI\"], \"\\[Equal]\", RowBox[{\(\*StyleBox[\"N\",\"TI\"]\^\"*\"\),StyleBox[\"m\",\"TI\"],\(\*StyleBox[\"N\",\"TI\"]\^\"\\[Dagger]\"\)}]}]\). The components of \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) can be negative, while \!\(\*RowBox[{StyleBox[\"N\",\"TI\"]}]\) is real when \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) is real.";
+NeutralinoRealDiagonalize::usage = "\!\(\*RowBox[{\"NeutralinoRealDiagonalize\",\"[\",StyleBox[\"m\",\"TI\"],\"]\"}]\) diagonalizes a \*StyleBox[\"complex\",Bold] symmetric matrix \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) by Automne-Takagi factorization, giving a list of matrices \!\(\*RowBox[{\"{\",RowBox[{StyleBox[\"d\",\"TI\"],\",\",StyleBox[\"N\",\"TI\"]}],\"}\"}]\), where \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) is a \*StyleBox[\"real\",Bold] diagonal matrix with \!\(\*RowBox[{RowBox[{\"Abs\",\"[\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"i\",\"TI\"],StyleBox[\"i\",\"TI\"]}]\),\"]\"}],\"<\",RowBox[{\"Abs\",\"[\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"j\",\"TI\"],StyleBox[\"j\",\"TI\"]}]\),\"]\"}]}]\) for \!\(\*RowBox[{StyleBox[\"i\",\"TI\"],\"<\",StyleBox[\"j\",\"TI\"]}]\), and \!\(\*RowBox[{StyleBox[\"N\",\"TI\"]}]\) is the NMIX matrix in SLHA convention, i.e., \!\(\*RowBox[{StyleBox[\"d\",\"TI\"], \"\\[Equal]\", RowBox[{\(\*StyleBox[\"N\",\"TI\"]\^\"*\"\),StyleBox[\"m\",\"TI\"],\(\*StyleBox[\"N\",\"TI\"]\^\"\\[Dagger]\"\)}]}]\). The components of \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) can be negative, while \!\(\*RowBox[{StyleBox[\"N\",\"TI\"]}]\) is real when \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) is real.";
+
+NeutralinoPositiveDiagonalize::usage = "\!\(\*RowBox[{\"NeutralinoPositiveDiagonalize\",\"[\",StyleBox[\"m\",\"TI\"],\"]\"}]\) diagonalizes a \*StyleBox[\"complex\",Bold] symmetric matrix \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) by Automne-Takagi factorization, giving a list of matrices \!\(\*RowBox[{\"{\",RowBox[{StyleBox[\"d\",\"TI\"],\",\",StyleBox[\"N\",\"TI\"]}],\"}\"}]\), where \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) is a \*StyleBox[\"positive-definite\",Bold] diagonal matrix with \!\(\*RowBox[{\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"i\",\"TI\"],StyleBox[\"i\",\"TI\"]}]\),\"<\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"j\",\"TI\"],StyleBox[\"j\",\"TI\"]}]\)}]\) for \!\(\*RowBox[{StyleBox[\"i\",\"TI\"],\"<\",StyleBox[\"j\",\"TI\"]}]\), and \!\(\*RowBox[{StyleBox[\"N\",\"TI\"]}]\) is the NMIX matrix in SLHA convention, i.e., \!\(\*RowBox[{StyleBox[\"d\",\"TI\"], \"\\[Equal]\", RowBox[{\(\*StyleBox[\"N\",\"TI\"]\^\"*\"\),StyleBox[\"m\",\"TI\"],\(\*StyleBox[\"N\",\"TI\"]\^\"\\[Dagger]\"\)}]}]\), but usually complex and cannot directly be written in SLHA file.";
 
 CharginoDiagonalize::usage = "\!\(\*RowBox[{\"CharginoDiagonalize\",\"[\",StyleBox[\"m\",\"TI\"],\"]\"}]\) gives a list of matrices \!\(\*RowBox[{\"{\",RowBox[{StyleBox[\"d\",\"TI\"],\",\",StyleBox[\"U\",\"TI\"],\",\",StyleBox[\"V\",\"TI\"]}],\"}\"}]\) by singular value decomposition, where \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) is a non-negative diagonal matrix with \!\(\*RowBox[{\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"i\",\"TI\"],StyleBox[\"i\",\"TI\"]}]\),\"<\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"j\",\"TI\"],StyleBox[\"j\",\"TI\"]}]\)}]\) for \!\(\*RowBox[{StyleBox[\"i\",\"TI\"],\"<\",StyleBox[\"j\",\"TI\"]}]\), and \!\(\*RowBox[{StyleBox[\"U\",\"TI\"]}]\) and \!\(\*RowBox[{StyleBox[\"V\",\"TI\"]}]\) are the UMIX and VMIX matrices in SLHA convention, i.e., \!\(\*RowBox[{StyleBox[\"d\",\"TI\"], \"\\[Equal]\", RowBox[{\(\*StyleBox[\"U\",\"TI\"]\^\"*\"\),StyleBox[\"m\",\"TI\"],\(\*StyleBox[\"V\",\"TI\"]\^\"\\[Dagger]\"\)}]}]\). Note that \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) is assumed as \!\(\*RowBox[{\"\\[ScriptCapitalL]\",\"\\[ReverseElement]\",RowBox[{\((\(\\[Psi]\_\"-\"\))\^\"T\"\),StyleBox[\"m\", \"TI\"], \(\\[Psi]\_\"+\"\)}]}]\).";
 
@@ -99,7 +101,11 @@ AutomneTakagi[m_] := Module[{v, p, x},
   {x.m.Transpose[x], x}
 ]; (* Diag = x m x^T *)
 
-NeutralinoDiagonalize[m_] := Module[{v, x},
+NeutralinoPositiveDiagonalize[m_] := Module[{v, x},
+  {v, x} = AutomneTakagi[m//N];
+  {v, Conjugate[x]} // Chop];
+
+NeutralinoRealDiagonalize[m_] := Module[{v, x},
   {v, x} = AutomneTakagi[m // N];
   (* Remove complex phase allowing negative mass *)
   Do[If[Re[x[[i,1]]]==Re[x[[i,2]]]==Re[x[[i,3]]]==Re[x[[i,4]]]==0, x[[i]] = x[[i]] * I], {i, 1, 4}];
@@ -354,7 +360,7 @@ CalculateSpectrum[slha_, OFile_] := Module[
     mssm["Q"] = 200.; (* Simplicity *)
 
     (* masses *)
-    {diag, nmix} = NeutralinoDiagonalize[NeutralinoMass[sm, mssm]];
+    {diag, nmix} = NeutralinoRealDiagonalize[NeutralinoMass[sm, mssm]];
     {mssm[1000022], mssm[1000023], mssm[1000025], mssm[1000035]} = Diagonal[diag];
     nmix = GenMix["NMIX", nmix, " Neutralino mixing matrix"];
 
