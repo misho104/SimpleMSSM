@@ -143,32 +143,33 @@ CharginoMass[sm_, mssm_] := Module[
     { {    mssm["M2"], Sqrt[2] sb mw },
       { Sqrt[2] cb mw,    mssm["mu"] }}];
 
-SfermionMassSQ[mF_, mL_, mR_, DL_, DR_, Xterm_] := (* Xterm = Conjugate[A] - MuTan(Cot)Beta *)
-    { {    mL^2 + mF^2 + DL, mF Xterm },
-      { Conjugate[mF Xterm], mR^2 + mF^2 + DR } };
+SfermionMassSQ[mF_, mL_, mR_, DL_, DR_, m12_] := (* m12 = mF * Xterm, Xterm = Conjugate[A] - MuTan(Cot)Beta *)
+    { {    mL^2 + mF^2 + DL, m12 },
+      { Conjugate[m12], mR^2 + mF^2 + DR } };
 
 Dterm[T3_, Q_, sm_, mssm_] := (T3 - Q sm["sw"]^2) Cos[2ArcTan[mssm["tb"]]] sm["mZ"]^2;
 
-SUmassSQ[sm_, mssm_, flavor_] := Module[
+SUmassSQ[sm_, mssm_, flavor_, IgnoreDiagMF_:False] := Module[
     {DL = Dterm[1/2,  2/3, sm, mssm],
      DR = Dterm[ 0 , -2/3, sm, mssm],
      X  = If[flavor != 3, 0, Conjugate[mssm["At"]] - mssm["mu"]/mssm["tb"]],
      mF = If[flavor != 3, 0, sm["yt"][mssm["Q"]]*sm["v"]/Sqrt[2]] },
-    SfermionMassSQ[mF, mssm["QL", flavor], mssm["UR", flavor], DL, DR, X]];
+    SfermionMassSQ[If[IgnoreDiagMF,0,mF], mssm["QL", flavor], mssm["UR", flavor], DL, DR, X mF]];
 
-SDmassSQ[sm_, mssm_, flavor_] := Module[
+SDmassSQ[sm_, mssm_, flavor_, IgnoreDiagMF_:False] := Module[
     {DL = Dterm[-1/2, -1/3, sm, mssm],
      DR = Dterm[  0 ,  1/3, sm, mssm],
      X  = If[flavor != 3, 0, Conjugate[mssm["Ab"]] - mssm["mu"]*mssm["tb"]],
      mF = If[flavor != 3, 0, sm["yb"][mssm["Q"]]*sm["v"]/Sqrt[2]] },
-    SfermionMassSQ[mF, mssm["QL", flavor], mssm["DR", flavor], DL, DR, X]];
+    SfermionMassSQ[If[IgnoreDiagMF,0,mF], mssm["QL", flavor], mssm["DR", flavor], DL, DR, X mF]];
 
-SLmassSQ[sm_, mssm_, flavor_] := Module[
+SLmassSQ[sm_, mssm_, flavor_, IgnoreDiagMF_:False] := Module[
     {DL = Dterm[-1/2, -1, sm, mssm],
      DR = Dterm[  0 ,  1, sm, mssm],
-     X  = If[flavor != 3, 0, Conjugate[mssm["Aa"]] - mssm["mu"]*mssm["tb"]],
-     mF = If[flavor != 3, 0, sm["ya"][mssm["Q"]]*sm["v"]/Sqrt[2]] },
-    SfermionMassSQ[mF, mssm["LL", flavor], mssm["ER", flavor], DL, DR, X]];
+     A  = Switch[flavor, 1, 0, 2, mssm["Am"], 3, mssm["Aa"], _, Abort[]],
+     mF = Switch[flavor, 1, 0, 2, sm["ym"][mssm["Q"]], 3, sm["ya"][mssm["Q"]], _, Abort[]] * sm["v"]/Sqrt[2]
+    },
+    SfermionMassSQ[If[IgnoreDiagMF,0,mF], mssm["LL", flavor], mssm["ER", flavor], DL, DR, mF Conjugate[A - mssm["mu"] * mssm["tb"]]]];
 
 SNmassSQ[sm_, mssm_, flavor_] := mssm["LL", flavor]^2 + Dterm[1/2, 0, sm, mssm];
 
@@ -379,8 +380,8 @@ CalculateSpectrum[slha_, OFile_] := Module[
     sbotmix = GenMix["SBOTMIX", sbotmix, " Sbottom mixing matrix"];
     staumix = GenMix["STAUMIX", staumix, " Stau V mixing matrix"];
 
-    {mssm[1000011], mssm[2000011]} = Diagonal[SLmassSQ[sm, mssm, 1]] // Sqrt;
-    {mssm[1000013], mssm[2000013]} = Diagonal[SLmassSQ[sm, mssm, 2]] // Sqrt;
+    {mssm[1000011], mssm[2000011]} = Diagonal[SLmassSQ[sm, mssm, 1]] // Sqrt; (* mixing is not considered (as required in MG5 mssm model) *)
+    {mssm[1000013], mssm[2000013]} = Diagonal[SLmassSQ[sm, mssm, 2, True]] // Sqrt; (* Ignore diagonal fermion mass *)
     {mssm[1000001], mssm[2000001]} = Diagonal[SDmassSQ[sm, mssm, 1]] // Sqrt;
     {mssm[1000003], mssm[2000003]} = Diagonal[SDmassSQ[sm, mssm, 2]] // Sqrt;
     {mssm[1000002], mssm[2000002]} = Diagonal[SUmassSQ[sm, mssm, 1]] // Sqrt;
