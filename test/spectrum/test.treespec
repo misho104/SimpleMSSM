@@ -81,6 +81,12 @@ Block MASS # mass spectrum
 Block ALPHA # Effective Higgs mixing parameter
           -2.68630018e-02   # alpha
 #
+Block HMIX Q=   2.00000000e+02 # Higgs mixing parameters
+     1     5.40000000e+02   # mu (tree-level)
+     2     4.00000000e+01   # tb (tree-level)
+     3     2.46000000e+02   # Higgs vev (input by hand)
+     4     2.30400000e+05   # mA^2 (tree-level)
+#
 Block NMIX # Neutralino mixing matrix
   1  1     9.95221112e-01   #
   1  2    -1.65407083e-02   #
@@ -129,11 +135,6 @@ Block STAUMIX # Stau V mixing matrix
   2  1     7.58943152e-01   #
   2  2    -6.51156887e-01   #
 #
-Block GAUGE Q=   9.11876000e+01 # Gauge couplings (at mZ)
-     1     3.57432433e-01   # gY(mZ) MSbar
-     2     6.51861902e-01   # g2(mZ) MSbar
-     3     1.21358091e+00   # g3(mZ) MSbar
-#
 Block YU Q=   2.00000000e+02
   3  3     9.51623879e-01   # Yt (tree; 1loop for Pole->MSbar)
 #
@@ -143,11 +144,19 @@ Block YD Q=   2.00000000e+02
 Block YE Q=   2.00000000e+02
   3  3     4.08713507e-01   # Ytau (tree; from pole mass)
 #
-Block HMIX Q=   2.00000000e+02 # Higgs mixing parameters
-     1     5.40000000e+02   # mu (tree-level)
-     2     4.00000000e+01   # tb (tree-level)
-     3     2.46000000e+02   # Higgs vev (input by hand)
-     4     2.30400000e+05   # mA^2 (tree-level)
+Block AU Q=   2.00000000e+02
+  3  3    -7.40000000e+02   # At (tree; i.e., = input value)
+#
+Block AD Q=   2.00000000e+02
+  3  3    -1.00000000e+03   # Ab (tree; i.e., = input value)
+#
+Block AE Q=   2.00000000e+02
+  3  3    -2.00000000e+02   # Atau (tree; i.e., = input value)
+#
+Block GAUGE Q=   9.11876000e+01 # Gauge couplings (at mZ)
+     1     3.57432433e-01   # gY(mZ) MSbar
+     2     6.51861902e-01   # g2(mZ) MSbar
+     3     1.21358091e+00   # g3(mZ) MSbar
 #
 Block MSOFT Q=   2.00000000e+02 # MSSM SUSY-breaking (tree-level, i.e., = input)
      1     1.60000000e+02   # M_1
@@ -170,13 +179,4 @@ Block MSOFT Q=   2.00000000e+02 # MSSM SUSY-breaking (tree-level, i.e., = input)
     47     8.30000000e+02   # m_dR[1]
     48     8.18000000e+02   # m_dR[2]
     49     7.62000000e+02   # m_dR[3]
-#
-Block AU Q=   2.00000000e+02
-  3  3    -7.40000000e+02   # At (tree; i.e., = input value)
-#
-Block AD Q=   2.00000000e+02
-  3  3    -1.00000000e+03   # Ab (tree; i.e., = input value)
-#
-Block AE Q=   2.00000000e+02
-  3  3    -2.00000000e+02   # Atau (tree; i.e., = input value)
 #
