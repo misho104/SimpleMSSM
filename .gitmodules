@@ -1,0 +1,3 @@
+[submodule "vendor/slha-mathematica"]
+	path = vendor/slha-mathematica
+	url = http://github.com/misho104/slha-mathematica
