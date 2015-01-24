@@ -2,19 +2,22 @@
 
 (* Time-Stamp: <2015-01-24 11:28:25 misho> *)
 
-(* :Context: TreeSpec` *)
+(* :Context: SimpleMSSM` *)
 
 (* :Author: Sho Iwamoto *)
 
 (* :Summary:
-    Package to calculate MSSM mass spectrum at very treelevel.
+    Subpackage of SimpleMSSM: Calculate MSSM mass spectrum at very tree-level.
 *)
 
 (* :Copyright: 2015 Sho Iwamoto *)
 
-(* :Package Version: 1.0 $Revision: 0.1 $ *)
+(* :Package Version: 1.1
+   Version 1.0 [Jan. 2015, SI] Initial version.
+   Version 1.1 [Jan. 2015, SI] Adopt to SLHA.m version 2.0.
+*)
 
-(* :Mathematica Version: 9.0 *)
+(* :Mathematica Version: 10.0 *)
 
 (* :History: *)
 
@@ -24,7 +27,7 @@
 
 (* :Warning: *)
 
-BeginPackage["TreeSpec`"];
+BeginPackage["SimpleMSSM`"];
 
 (* Usage messages *)
 
@@ -258,7 +261,7 @@ AddValue[b_, {v_, c_}] := Module[
 
 GenSPINFO[] := GenNewBlock["SPINFO", "# Program Information",
     {{{1, "TreeSpec"}, "# spectrum calculator"},
-     {{2, "0.1"},      "# version number"}}];
+     {{2, "1.1"},      "# version number"}}];
 
 GenMODSEL[] := GenNewBlock["MODSEL", "# model selection", {{{1, 1}, "# SUGRA-based general MSSM simulation"}}];
 
