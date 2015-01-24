@@ -72,7 +72,7 @@ Begin["`Private`"];
 
 
 (* Neutralino mass diagonalization : N s.t. Diag = N^* M N^dagger *)
-AutonneTakagi[m_] := Module[{v, p, x},
+AutonneTakagi[m0_] := Module[{v, p, x, m = SetPrecision[N[m0, 30], 30], $MinPrecision = 30},
   v = Eigenvectors[Conjugate[Transpose[m]].m] // Orthogonalize;
   p = DiagonalMatrix[Exp[-I Arg[Diagonal[v.m.Transpose[v]]]/2]];
   x = Reverse[p.v];
@@ -80,27 +80,27 @@ AutonneTakagi[m_] := Module[{v, p, x},
 ]; (* Diag = x m x^T *)
 
 NeutralinoPositiveDiagonalize[m_] := Module[{v, x},
-  {v, x} = AutonneTakagi[m//N];
+  {v, x} = AutonneTakagi[m];
   {v, Conjugate[x]} // Chop];
 
 NeutralinoRealDiagonalize[m_] := Module[{v, x},
-  {v, x} = AutonneTakagi[m // N];
+  {v, x} = AutonneTakagi[m];
   (* Remove complex phase allowing negative mass *)
   Do[If[Re[x[[i,1]]]==Re[x[[i,2]]]==Re[x[[i,3]]]==Re[x[[i,4]]]==0, x[[i]] = x[[i]] * I], {i, 1, 4}];
   {x.m.Transpose[x], Conjugate[x] } // Chop];
 
 (* Chargino mass diagonalization : (chi-)^T M (chi+),  (U, V) s.t. Diag = U^* M V^dagger *)
-CharginoDiagonalize[m_] := Module[{u, d, v},
-  {u, d, v} = SingularValueDecomposition[m // N]; (*Diag=u^dagger m v, but diag descending*)
+CharginoDiagonalize[m0_] := Module[{u, d, v, m = SetPrecision[N[m0, 30], 30], $MinPrecision = 30},
+  {u, d, v} = SingularValueDecomposition[m]; (*Diag=u^dagger m v, but diag descending*)
   {u, v} = Transpose[Reverse[Transpose[#]]] & /@ {u, v}; (*Now Diag ascending*)
   u = Transpose[u];
   v = Transpose[Conjugate[v]];
   {Conjugate[u].m.Conjugate[Transpose[v]], u, v} // Chop];
 
 (* Sfermion mass diagonalization : {{f1}, {f2}} = F_ij . {{fL}, {fR}}, or Diag = F M F^dagger *)
-SfermionDiagonalize[m_] := Module[{a, b, f, diag},
-  a = ArcTan[N[2 Abs[m[[1, 2]]]/(m[[1, 1]] - m[[2, 2]])]]/2;
-  b = Arg[N[m[[1, 2]]]];
+SfermionDiagonalize[m0_] := Module[{a, b, f, diag, m = SetPrecision[N[m0, 30], 30], $MinPrecision = 30},
+  a = ArcTan[2 Abs[m[[1, 2]]]/(m[[1, 1]] - m[[2, 2]])]/2;
+  b = Arg[m[[1, 2]]];
   f = { { Cos[a],           Sin[a] Exp[I b]},
         {-Sin[a] Exp[-I b], Cos[a]} };
   diag = f.m.Conjugate[Transpose[f]];
