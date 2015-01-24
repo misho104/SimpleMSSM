@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-24 11:28:25 misho> *)
+(* Time-Stamp: <2015-01-24 13:32:06 misho> *)
 
 (* :Context: SimpleMSSM` *)
 
@@ -29,15 +29,9 @@
 
 BeginPackage["SimpleMSSM`"];
 
+<<"MSSM.m";
+
 (* Usage messages *)
-
-NeutralinoRealDiagonalize::usage = "\!\(\*RowBox[{\"NeutralinoRealDiagonalize\",\"[\",StyleBox[\"m\",\"TI\"],\"]\"}]\) diagonalizes a \*StyleBox[\"complex\",Bold] symmetric matrix \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) by Automne-Takagi factorization, giving a list of matrices \!\(\*RowBox[{\"{\",RowBox[{StyleBox[\"d\",\"TI\"],\",\",StyleBox[\"N\",\"TI\"]}],\"}\"}]\), where \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) is a \*StyleBox[\"real\",Bold] diagonal matrix with \!\(\*RowBox[{RowBox[{\"Abs\",\"[\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"i\",\"TI\"],StyleBox[\"i\",\"TI\"]}]\),\"]\"}],\"<\",RowBox[{\"Abs\",\"[\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"j\",\"TI\"],StyleBox[\"j\",\"TI\"]}]\),\"]\"}]}]\) for \!\(\*RowBox[{StyleBox[\"i\",\"TI\"],\"<\",StyleBox[\"j\",\"TI\"]}]\), and \!\(\*RowBox[{StyleBox[\"N\",\"TI\"]}]\) is the NMIX matrix in SLHA convention, i.e., \!\(\*RowBox[{StyleBox[\"d\",\"TI\"], \"\\[Equal]\", RowBox[{\(\*StyleBox[\"N\",\"TI\"]\^\"*\"\),StyleBox[\"m\",\"TI\"],\(\*StyleBox[\"N\",\"TI\"]\^\"\\[Dagger]\"\)}]}]\). The components of \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) can be negative, while \!\(\*RowBox[{StyleBox[\"N\",\"TI\"]}]\) is real when \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) is real.";
-
-NeutralinoPositiveDiagonalize::usage = "\!\(\*RowBox[{\"NeutralinoPositiveDiagonalize\",\"[\",StyleBox[\"m\",\"TI\"],\"]\"}]\) diagonalizes a \*StyleBox[\"complex\",Bold] symmetric matrix \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) by Automne-Takagi factorization, giving a list of matrices \!\(\*RowBox[{\"{\",RowBox[{StyleBox[\"d\",\"TI\"],\",\",StyleBox[\"N\",\"TI\"]}],\"}\"}]\), where \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) is a \*StyleBox[\"positive-definite\",Bold] diagonal matrix with \!\(\*RowBox[{\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"i\",\"TI\"],StyleBox[\"i\",\"TI\"]}]\),\"<\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"j\",\"TI\"],StyleBox[\"j\",\"TI\"]}]\)}]\) for \!\(\*RowBox[{StyleBox[\"i\",\"TI\"],\"<\",StyleBox[\"j\",\"TI\"]}]\), and \!\(\*RowBox[{StyleBox[\"N\",\"TI\"]}]\) is the NMIX matrix in SLHA convention, i.e., \!\(\*RowBox[{StyleBox[\"d\",\"TI\"], \"\\[Equal]\", RowBox[{\(\*StyleBox[\"N\",\"TI\"]\^\"*\"\),StyleBox[\"m\",\"TI\"],\(\*StyleBox[\"N\",\"TI\"]\^\"\\[Dagger]\"\)}]}]\), but usually complex and cannot directly be written in SLHA file.";
-
-CharginoDiagonalize::usage = "\!\(\*RowBox[{\"CharginoDiagonalize\",\"[\",StyleBox[\"m\",\"TI\"],\"]\"}]\) gives a list of matrices \!\(\*RowBox[{\"{\",RowBox[{StyleBox[\"d\",\"TI\"],\",\",StyleBox[\"U\",\"TI\"],\",\",StyleBox[\"V\",\"TI\"]}],\"}\"}]\) by singular value decomposition, where \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) is a non-negative diagonal matrix with \!\(\*RowBox[{\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"i\",\"TI\"],StyleBox[\"i\",\"TI\"]}]\),\"<\",\(\*StyleBox[\"d\",\"TI\"]\_\*RowBox[{StyleBox[\"j\",\"TI\"],StyleBox[\"j\",\"TI\"]}]\)}]\) for \!\(\*RowBox[{StyleBox[\"i\",\"TI\"],\"<\",StyleBox[\"j\",\"TI\"]}]\), and \!\(\*RowBox[{StyleBox[\"U\",\"TI\"]}]\) and \!\(\*RowBox[{StyleBox[\"V\",\"TI\"]}]\) are the UMIX and VMIX matrices in SLHA convention, i.e., \!\(\*RowBox[{StyleBox[\"d\",\"TI\"], \"\\[Equal]\", RowBox[{\(\*StyleBox[\"U\",\"TI\"]\^\"*\"\),StyleBox[\"m\",\"TI\"],\(\*StyleBox[\"V\",\"TI\"]\^\"\\[Dagger]\"\)}]}]\). Note that \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) is assumed as \!\(\*RowBox[{\"\\[ScriptCapitalL]\",\"\\[ReverseElement]\",RowBox[{\((\(\\[Psi]\_\"-\"\))\^\"T\"\),StyleBox[\"m\", \"TI\"], \(\\[Psi]\_\"+\"\)}]}]\).";
-
-SfermionDiagonalize::usage = "\!\(\*RowBox[{\"SfermionDiagonalize\",\"[\",StyleBox[\"m\",\"TI\"],\"]\"}]\) receives a two-by-two Hermitian matrix \!\(\*RowBox[{StyleBox[\"m\",\"TI\"]}]\) to yield a list of matrices \!\(\*RowBox[{\"{\",RowBox[{StyleBox[\"d\",\"TI\"],\",\",StyleBox[\"F\",\"TI\"]}],\"}\"}]\), where \!\(\*RowBox[{StyleBox[\"d\",\"TI\"]}]\) is a non-negative diagonal matrix with \!\(\*RowBox[{\(\*StyleBox[\"d\",\"TI\"]\_\"11\"\),\"<\",\(\*StyleBox[\"d\",\"TI\"]\_\"22\"\)}]\), and \!\(\*RowBox[{StyleBox[\"F\",\"TI\"]}]\) is the mixing matrix following SLHA convention, i.e., \!\(\*RowBox[{StyleBox[\"d\",\"TI\"], \"\\[Equal]\", RowBox[{StyleBox[\"F\",\"TI\"],StyleBox[\"m\",\"TI\"],\(\*StyleBox[\"F\",\"TI\"]\^\"\\[Dagger]\"\)}]}]\), or \!\(\*RowBox[{RowBox[{\"(\",GridBox[{{\(\"\\[Psi]\"\_1\)},{\(\"\\[Psi]\"\_2\)}}],\")\"}],\"\\[Equal]\",\"F\",RowBox[{\"(\",GridBox[{{\(\"\\[Psi]\"\_\"L\"\)},{\(\"\\[Psi]\"\_\"R\"\)}}],\")\"}]}]\).";
 
 CalculateSpectrum::usage = "\!\(\*RowBox[{\"CalculateSpectrum\",\"[\",StyleBox[\"slha\",\"TI\"],\",\",StyleBox[\"ofile\",\"TI\"],\"]\"}]\) receives a SLHA object \!\(\*RowBox[{StyleBox[\"slha\",\"TI\"]}]\) as input parameters and gives a SLHA object with full SLHA mass spectrum. When the output filename \!\(\*RowBox[{StyleBox[\"ofile\",\"TI\"]}]\) is specified, the result is also saved in the file.";
 
@@ -97,85 +91,26 @@ SMparameter[slha_] :=
   sm["ym"] = Function[{Q}, Sqrt[2] * sm["mm"] / sm["v"]]; (* calculated from pole mass; quantum correction ignored. *)
   sm];
 
-(* Neutralino mass diagonalization : N s.t. Diag = N^* M N^dagger *)
-AutomneTakagi[m_] := Module[{v, p, x},
-  v = Eigenvectors[Conjugate[Transpose[m]].m] // Orthogonalize;
-  p = DiagonalMatrix[Exp[-I Arg[Diagonal[v.m.Transpose[v]]]/2]];
-  x = Reverse[p.v];
-  {x.m.Transpose[x], x}
-]; (* Diag = x m x^T *)
+(* Masses *)
+NeutralinoMass[sm_, mssm_] := NeutralinoMass[mssm["M1"], mssm["M2"], mssm["tb"], mssm["mu"], sm["mZ"], sm["sw"]];
+CharginoMass  [sm_, mssm_] := CharginoMass  [mssm["M2"], mssm["tb"], mssm["mu"], sm["mW"]];
 
-NeutralinoPositiveDiagonalize[m_] := Module[{v, x},
-  {v, x} = AutomneTakagi[m//N];
-  {v, Conjugate[x]} // Chop];
+SUmassSQ[sm_, mssm_, flavor_] := With[
+    { mF = If[flavor != 3, 0, sm["yt"][mssm["Q"]]*sm["v"]/Sqrt[2]],
+      A  = If[flavor != 3, 0, mssm["At"]] },
+    SUmassSQ[mF, mssm["QL", flavor], mssm["UR", flavor], mssm["mu"], A, ArcTan[mssm["tb"]], sm["mZ"], sm["sw"]]];
 
-NeutralinoRealDiagonalize[m_] := Module[{v, x},
-  {v, x} = AutomneTakagi[m // N];
-  (* Remove complex phase allowing negative mass *)
-  Do[If[Re[x[[i,1]]]==Re[x[[i,2]]]==Re[x[[i,3]]]==Re[x[[i,4]]]==0, x[[i]] = x[[i]] * I], {i, 1, 4}];
-  {x.m.Transpose[x], Conjugate[x] } // Chop];
+SDmassSQ[sm_, mssm_, flavor_] := With[
+    { mF = If[flavor != 3, 0, sm["yb"][mssm["Q"]]*sm["v"]/Sqrt[2]],
+      A  = If[flavor != 3, 0, mssm["Ab"]] },
+    SDmassSQ[mF, mssm["QL", flavor], mssm["DR", flavor], mssm["mu"], A, ArcTan[mssm["tb"]], sm["mZ"], sm["sw"]]];
 
-(* Chargino mass diagonalization : (chi-)^T M (chi+),  (U, V) s.t. Diag = U^* M V^dagger *)
-CharginoDiagonalize[m_] := Module[{u, d, v},
-  {u, d, v} = SingularValueDecomposition[m // N]; (*Diag=u^dagger m v, but diag descending*)
-  {u, v} = Transpose[Reverse[Transpose[#]]] & /@ {u, v}; (*Now Diag ascending*)
-  u = Transpose[u];
-  v = Transpose[Conjugate[v]];
-  {Conjugate[u].m.Conjugate[Transpose[v]], u, v} // Chop];
+SLmassSQ[sm_, mssm_, flavor_] := With[
+    { mF = If[flavor != 3, 0, sm["ya"][mssm["Q"]]*sm["v"]/Sqrt[2]],
+      A  = If[flavor != 3, 0, mssm["Aa"]] },
+    SLmassSQ[mF, mssm["LL", flavor], mssm["ER", flavor], mssm["mu"], A, ArcTan[mssm["tb"]], sm["mZ"], sm["sw"]]];
 
-(* Sfermion mass diagonalization : {{f1}, {f2}} = F_ij . {{fL}, {fR}}, or Diag = F M F^dagger *)
-SfermionDiagonalize[m_] := Module[{a, b, f, diag},
-  a = ArcTan[N[2 Abs[m[[1, 2]]]/(m[[1, 1]] - m[[2, 2]])]]/2;
-  b = Arg[N[m[[1, 2]]]];
-  f = { { Cos[a],           Sin[a] Exp[I b]},
-        {-Sin[a] Exp[-I b], Cos[a]} };
-  diag = f.m.Conjugate[Transpose[f]];
-  If[Re[diag[[1, 1]] - diag[[2, 2]]] > 0, f = Reverse[f]];
-  {f.m.Conjugate[Transpose[f]], f} // Chop]
-
-(* Mass matrices *)
-NeutralinoMass[sm_, mssm_] := Module[
-    {sb = Sin[ArcTan[mssm["tb"]]], sw = sm["sw"],
-     cb = Cos[ArcTan[mssm["tb"]]], cw = sm["cw"], mz = sm["mZ"]},
-    { { mssm["M1"],          0,   -cb sw mz,    sb sw mz},
-      {          0, mssm["M2"],    cb cw mz,   -sb cw mz},
-      {  -cb sw mz,   cb cw mz,           0, -mssm["mu"]},
-      {   sb sw mz,  -sb cw mz, -mssm["mu"],           0}}];
-
-CharginoMass[sm_, mssm_] := Module[
-    {sb = Sin[ArcTan[mssm["tb"]]], cb = Cos[ArcTan[mssm["tb"]]], mw = sm["mW"]},
-    { {    mssm["M2"], Sqrt[2] sb mw },
-      { Sqrt[2] cb mw,    mssm["mu"] }}];
-
-SfermionMassSQ[mF_, mL_, mR_, DL_, DR_, m12_] := (* m12 = mF * Xterm, Xterm = Conjugate[A] - MuTan(Cot)Beta *)
-    { {    mL^2 + mF^2 + DL, m12 },
-      { Conjugate[m12], mR^2 + mF^2 + DR } };
-
-Dterm[T3_, Q_, sm_, mssm_] := (T3 - Q sm["sw"]^2) Cos[2ArcTan[mssm["tb"]]] sm["mZ"]^2;
-
-SUmassSQ[sm_, mssm_, flavor_, IgnoreDiagMF_:False] := Module[
-    {DL = Dterm[1/2,  2/3, sm, mssm],
-     DR = Dterm[ 0 , -2/3, sm, mssm],
-     X  = If[flavor != 3, 0, Conjugate[mssm["At"]] - mssm["mu"]/mssm["tb"]],
-     mF = If[flavor != 3, 0, sm["yt"][mssm["Q"]]*sm["v"]/Sqrt[2]] },
-    SfermionMassSQ[If[IgnoreDiagMF,0,mF], mssm["QL", flavor], mssm["UR", flavor], DL, DR, X mF]];
-
-SDmassSQ[sm_, mssm_, flavor_, IgnoreDiagMF_:False] := Module[
-    {DL = Dterm[-1/2, -1/3, sm, mssm],
-     DR = Dterm[  0 ,  1/3, sm, mssm],
-     X  = If[flavor != 3, 0, Conjugate[mssm["Ab"]] - mssm["mu"]*mssm["tb"]],
-     mF = If[flavor != 3, 0, sm["yb"][mssm["Q"]]*sm["v"]/Sqrt[2]] },
-    SfermionMassSQ[If[IgnoreDiagMF,0,mF], mssm["QL", flavor], mssm["DR", flavor], DL, DR, X mF]];
-
-SLmassSQ[sm_, mssm_, flavor_, IgnoreDiagMF_:False] := Module[
-    {DL = Dterm[-1/2, -1, sm, mssm],
-     DR = Dterm[  0 ,  1, sm, mssm],
-     A  = Switch[flavor, 1, 0, 2, mssm["Am"], 3, mssm["Aa"], _, Abort[]],
-     mF = Switch[flavor, 1, 0, 2, sm["ym"][mssm["Q"]], 3, sm["ya"][mssm["Q"]], _, Abort[]] * sm["v"]/Sqrt[2]
-    },
-    SfermionMassSQ[If[IgnoreDiagMF,0,mF], mssm["LL", flavor], mssm["ER", flavor], DL, DR, mF Conjugate[A - mssm["mu"] * mssm["tb"]]]];
-
-SNmassSQ[sm_, mssm_, flavor_] := mssm["LL", flavor]^2 + Dterm[1/2, 0, sm, mssm];
+SNmassSQ[sm_, mssm_, flavor_] := SNmassSQ[mssm["LL", flavor], ArcTan[mssm["tb"]], sm["mZ"], sm["sw"]];
 
 
 (* MSSM *)
@@ -384,8 +319,8 @@ CalculateSpectrum[slha_, OFile_] := Module[
     sbotmix = GenMix["SBOTMIX", sbotmix, "# Sbottom mixing matrix"];
     staumix = GenMix["STAUMIX", staumix, "# Stau V mixing matrix"];
 
-    {mssm[1000011], mssm[2000011]} = Diagonal[SLmassSQ[sm, mssm, 1]] // Sqrt; (* mixing is not considered (as required in MG5 mssm model) *)
-    {mssm[1000013], mssm[2000013]} = Diagonal[SLmassSQ[sm, mssm, 2, True]] // Sqrt; (* Ignore diagonal fermion mass *)
+    {mssm[1000011], mssm[2000011]} = Diagonal[SLmassSQ[sm, mssm, 1]] // Sqrt; (* TODO: To meet MG5 requirement that selectron and smuon have the exactly same mass *)
+    {mssm[1000013], mssm[2000013]} = Diagonal[SLmassSQ[sm, mssm, 2]] // Sqrt;
     {mssm[1000001], mssm[2000001]} = Diagonal[SDmassSQ[sm, mssm, 1]] // Sqrt;
     {mssm[1000003], mssm[2000003]} = Diagonal[SDmassSQ[sm, mssm, 2]] // Sqrt;
     {mssm[1000002], mssm[2000002]} = Diagonal[SUmassSQ[sm, mssm, 1]] // Sqrt;
