@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-24 13:36:04 misho> *)
+(* Time-Stamp: <2015-01-28 16:47:27 misho> *)
 
 (* :Context: SimpleMSSM` *)
 
@@ -8,6 +8,8 @@
 
 (* :Summary:
     Subpackage of SimpleMSSM: Return EDM values under specified mass spectrum.
+    EDM formulae are obtained from hep-ph/9807501 by T. Ibrahim and P. Nath,
+    and hep-ph/9906206 by S. Pokorski, J. Rosiek, and C. A. Savoy.
 *)
 
 (* :Copyright: 2015 Sho Iwamoto *)
@@ -159,6 +161,7 @@ GetMatrices[p_]:=Module[{m, tmp},
     m["v"] = Sqrt[m["V"]];
     m];
 
+(*  hep-ph/9807501 by T. Ibrahim and P. Nath *)
 ElectronEDM[p_]:=Module[
     {sm = p[SM], mssm = p[MSSM], ph = p[PHASE], m = GetMatrices[p],
      b = 3, Q = -1, T3 = -1/2, a0, b0, c0,
