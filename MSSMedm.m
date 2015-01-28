@@ -173,8 +173,8 @@ ElectronEDM[p_]:=Module[
     Gammae[i_] := ke Conjugate[u[[i,2]]v[[i,1]]];
     Etae[i_,k_] := (a0 x[[1,i]]Conjugate[d[[1,k]]]+b0 x[[2,i]]Conjugate[d[[1,k]]] - ke x[[b,i]]Conjugate[d[[2,k]]])(c0 x[[1,i]]d[[2,k]]-ke x[[b,i]]d[[1,k]]);
     prefactor = sm["alpha0"]/(4\[Pi] sm["sw"]^2);
-    chargino[i_]      := With[{R=(m["c"][[i]]/m["v"])^2}, prefactor R A[R] Im[Gammae[i]]];
-    neutralino[i_,k_] := With[{R=(m["n"][[i]]/m["l",1][[k]])^2}, prefactor R B[R] Im[Etae[i,k]] Q];
+    chargino[i_]      := prefactor m["c"][[i]]/(m["v"]^2) A[(m["c"][[i]]/m["v"])^2] Im[Gammae[i]];
+    neutralino[i_,k_] := prefactor m["n"][[i]]/(m["l",1][[k]]^2) B[(m["n"][[i]]/m["l",1][[k]])^2] Im[Etae[i,k]] Q;
     {neutralino[#, 1]&/@{1,2,3,4}, neutralino[#, 2]&/@{1,2,3,4}, chargino[#]&/@{1,2}}]
 
 
