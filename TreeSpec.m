@@ -27,7 +27,7 @@
 
 (* :Warning: *)
 
-BeginPackage["SimpleMSSM`"];
+BeginPackage["SimpleMSSM`TreeSpec`"];
 
 <<"MSSM.m";
 

@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-28 21:33:39 misho> *)
+(* Time-Stamp: <2015-01-29 19:24:46 misho> *)
 
 (* :Context: SimpleMSSM` *)
 
@@ -30,11 +30,12 @@
 
 
 
-SetDirectory[NotebookDirectory[]];
-Needs["SLHA`", "vendor/slha-mathematica/SLHA.m"];
-<<"MSSM.m";
+Needs["SLHA`", FileNameJoin[{DirectoryName[$Input],"vendor","slha-mathematica","SLHA.m"}]];
+Needs["SimpleMSSM`MSSM`", FileNameJoin[{DirectoryName[$Input],"MSSM.m"}]];
 
-BeginPackage["SimpleMSSM`"];
+BeginPackage["SimpleMSSM`MSSMedm`"];
+
+AppendTo[$ContextPath, "SimpleMSSM`MSSM`"];
 
 (* Usage messages *)
 F := "\!\(\*StyleBox[\""<>#1<>"\", \""<>#2<>"\"]\)" &;
@@ -43,15 +44,15 @@ B := "\!\(\*StyleBox[\""<>#<>"\", \"Bold\"]\)" &;
 L := "\!\("<>T[#1]<>"\_"<>T[#2]<>"\)" &;
 X := StringJoin[Riffle[List[##],", "]] &;
 
-SUmassSQ::usage = "SUmassSQ["<>X[L["M","F"],L["M","L"],L["M","R"],T["\[Mu]"],T["A"],T["\[Beta]"],L["m","Z"],L["s","w"]]<>"] returns an up-type squark mass matrix with the given parameters, where "<>L["M","L"]<>" and "<>L["M","R"]<>" are squark soft masses, "<>L["M","F"]<>" is corresponding quark mass, and "<>T["A"]<>" is corresponding A-term.";
-SDmassSQ::usage = "SDmassSQ["<>X[L["M","F"],L["M","L"],L["M","R"],T["\[Mu]"],T["A"],T["\[Beta]"],L["m","Z"],L["s","w"]]<>"] returns a down-type squark mass matrix with the given parameters, where "<>L["M","L"]<>" and "<>L["M","R"]<>" are squark soft masses, "<>L["M","F"]<>" is corresponding quark mass, and "<>T["A"]<>" is corresponding A-term.";
+NewSM::usage            = "(this should be public? more friendly interface should be...)";
+NewMSSM::usage          = "(this should be public? more friendly interface should be...)";
+NewPhase::usage         = "(this should be public? more friendly interface should be...)";
+NewParams::usage        = "(this should be public? more friendly interface should be...)";
+ElectronEDM::usage      = "to be written...";
+ElectronEDMins::usage   = "to be written...";
 
-SLmassSQ::usage = "SLmassSQ["<>X[L["M","F"],L["M","L"],L["M","R"],T["\[Mu]"],T["A"],T["\[Beta]"],L["m","Z"],L["s","w"]]<>"] returns a charged slepton mass matrix with the given parameters, where "<>L["M","L"]<>" and "<>L["M","R"]<>" are slepton soft masses, "<>L["M","F"]<>" is corresponding lepton mass, and "<>T["A"]<>" is corresponding A-term.";
 
-SNmassSQ::usage = "SNmassSQ["<>X[L["M","L"],T["\[Beta]"],L["m","Z"],L["s","w"]]<>"] returns sneutrino mass squared under the given parameters, where "<>L["M","L"]<>" is left-handed slepton soft masses. The Weinberg angle "<>L["s","w"]<>" is irrelevant to sneutrino mass but required for uniformity.";
-
-
-Remove[SimpleMSSM`F, SimpleMSSM`T, SimpleMSSM`B, SimpleMSSM`L, SimpleMSSM`X];
+Remove[F, T, B, L, X];
 
 
 (* Error messages *)

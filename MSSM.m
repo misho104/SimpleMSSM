@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-24 13:28:04 misho> *)
+(* Time-Stamp: <2015-01-29 19:19:39 misho> *)
 
 (* :Context: SimpleMSSM` *)
 
@@ -28,7 +28,7 @@
 
 
 
-BeginPackage["SimpleMSSM`"];
+BeginPackage["SimpleMSSM`MSSM`"];
 
 
 (* Usage messages *)
@@ -60,7 +60,7 @@ SLmassSQ::usage = "SLmassSQ["<>X[L["M","F"],L["M","L"],L["M","R"],T["\[Mu]"],T["
 SNmassSQ::usage = "SNmassSQ["<>X[L["M","L"],T["\[Beta]"],L["m","Z"],L["s","w"]]<>"] returns sneutrino mass squared under the given parameters, where "<>L["M","L"]<>" is left-handed slepton soft masses. The Weinberg angle "<>L["s","w"]<>" is irrelevant to sneutrino mass but required for uniformity.";
 
 
-Remove[SimpleMSSM`F, SimpleMSSM`T, SimpleMSSM`B, SimpleMSSM`L, SimpleMSSM`X];
+Remove[F, T, B, L, X];
 
 
 (* Error messages *)

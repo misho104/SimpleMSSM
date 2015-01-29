@@ -1,16 +1,8 @@
-#!/bin/bash
-# -*- Mathematica -*-
-# MathematicaScript and MathKernel 9 have a bug that prevents output sent
-# from a Mathematica script to stdout from being catched on a pipe or
-# redirected to a file. This workaround runs the script inline into a
-# MathKernel session.
-# See http://mathematica.stackexchange.com/questions/20954/
-ARG=`perl -e '$,=",";print map{qq/"$_"/}@ARGV' -- "$0" "$@"`
-MathKernel -noinit -noprompt -run "\$MyCommandLine={$ARG}; $(sed '1,/^exit/d' $0) ; Exit[]"
-exit $?
+#!MathematicaScript -script
+(* -*- Mathematica -*- *)
 
-Needs["SLHA`", "../../SLHA.m"];
-Needs["TreeSpec`", "../TreeSpec.m"];
+Needs["SLHA`",            FileNameJoin[{DirectoryName[$Input], "..", "vendor", "slha-mathematica", "SLHA.m"}]];
+Needs["SimpleMSSM`MSSM`", FileNameJoin[{DirectoryName[$Input], "..", "MSSM.m"}]];
 
 UnitTest::Pass = "";
 UnitTest::Fail = "";
