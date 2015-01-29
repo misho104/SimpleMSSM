@@ -95,6 +95,7 @@ NewMSSM[slha_] := Module[{mssm},
     mssm["beta"] = ArcTan[mssm["tb"]];
     mssm["LL",1] = slha["MSOFT"][31, IfMissing->"Abort"];
     mssm["ER",1] = slha["MSOFT"][34, IfMissing->"Abort"];
+    Do[mssm[pid] = slha["MASS"][pid], {pid, Flatten[slha["MASS"]["keys"]]}];
     mssm];
 
 NewPhase[] := Module[{ph},
@@ -183,6 +184,21 @@ ElectronEDM[p_]:=Module[
     chargino[i_]      := prefactor m["c"][[i]]/(m["v"]^2) A[(m["c"][[i]]/m["v"])^2] Im[Gammae[i]];
     neutralino[i_,k_] := prefactor m["n"][[i]]/(m["l",1][[k]]^2) B[(m["n"][[i]]/m["l",1][[k]])^2] Im[Etae[i,k]] Q;
     {neutralino[#, 1]&/@{1,2,3,4}, neutralino[#, 2]&/@{1,2,3,4}, chargino[#]&/@{1,2}}]
+
+
+(* EDM/e in GeV^{-1}. hep-ph/9906206 by S. Pokorski, J. Rosiek, and C. A. Savoy. *)
+ElectronEDMins[p_]:=Module[
+    {sm = p[SM], mssm = p[MSSM], ph = p[PHASE],
+     M1, M2, mu, tb, mL, mE, mN,
+     prefactor},
+    (* Selectron masses are read from MSOFT because MASS can be in mass-eigenstates in SLHA2 convention. *)
+    {M1, M2, mu, tb, mL, mE, mN} = {mssm["M1"], mssm["M2"], mssm["mu"], mssm["tb"], mssm["LL",1], mssm["ER",1], mssm[1000012]};
+    prefactor = sm["me"] tb sm["alpha0"] / (4\[Pi] sm["sw"]^2);
+    { prefactor            Fa[M2^2/mN^2,mu^2/mN^2] Im[p["M2"]p["mu"]] / mN^4,
+      prefactor sm["tw"]^2 Fb[mL^2/M1^2,mE^2/M1^2] Im[p["M1"](p["mu"] - Conjugate[p["Ae",1]/tb])] / M1^4,
+      prefactor sm["tw"]^2 Fb[M1^2/mL^2,mu^2/mL^2] Im[p["M1"]p["mu"]] / (2 mL^4),
+     -prefactor            Fb[M2^2/mL^2,mu^2/mL^2] Im[p["M2"]p["mu"]] / (2 mL^4),
+     -prefactor sm["tw"]^2 Fb[M1^2/mE^2,mu^2/mE^2] Im[p["M1"]p["mu"]] / mE^4}]
 
 
 End[];
