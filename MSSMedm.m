@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-28 16:47:27 misho> *)
+(* Time-Stamp: <2015-01-28 21:33:39 misho> *)
 
 (* :Context: SimpleMSSM` *)
 
@@ -161,6 +161,11 @@ GetMatrices[p_]:=Module[{m, tmp},
     m["v"] = Sqrt[m["V"]];
     m];
 
+N2[x_]:=(1-x^2+2x Log[x])/(1-x)^3;
+C2[x_]:=(3-4x+x^2+2Log[x])/(1-x)^3;
+Fa[x_,y_]:= (C2[x]-C2[y])/(2(x-y));
+Fb[x_,y_]:=-(N2[x]-N2[y])/(2(x-y));
+
 (* EDM/e in GeV^{-1}. 1406.0083 by T. Ibrahim, A. Itani, and P. Nath.
    Note that the original reference, hep-ph/9807501, contains an error in the formulae
    even after the erratum in PRDx60. *)
@@ -168,7 +173,7 @@ ElectronEDM[p_]:=Module[
     {sm = p[SM], mssm = p[MSSM], ph = p[PHASE], m = GetMatrices[p],
      b = 3, Q = -1, T3 = -1/2, a0, b0, c0,
      diag, u, v, x, d, ke, Gammae, Etae, chargino, neutralino, prefactor,
-     A=(3-#+2Log[#]/(1-#))/(1-#)^2/2&, B=(1+#+2# Log[#]/(1-#))/(2(#-1)^2)&},
+     A = (C2[#]/2)&, B = (N2[#]/2)&},
     {a0, b0, c0} = {-Sqrt[2]sm["tw"](Q-T3), -Sqrt[2]T3, Sqrt[2]sm["tw"]Q};
     {u, v, x, d} = {m["UMIX"], m["VMIX"], Conjugate[Transpose[m["NMIX"]]], Conjugate[Transpose[m["STAUMIX",1]]]};
     ke=(sm["me"]Exp[-I ph["vd"]])/(Sqrt[2]sm["mW"]Cos[mssm["beta"]]);
