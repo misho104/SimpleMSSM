@@ -8,7 +8,7 @@
 
 (* :Summary:
     Subpackage of SimpleMSSM: Return EDM values under specified mass spectrum.
-    EDM formulae are obtained from hep-ph/9807501 by T. Ibrahim and P. Nath,
+    EDM formulae are obtained from 1406.0083 by T. Ibrahim, A. Itani, and P. Nath,
     and hep-ph/9906206 by S. Pokorski, J. Rosiek, and C. A. Savoy.
 *)
 
@@ -161,12 +161,14 @@ GetMatrices[p_]:=Module[{m, tmp},
     m["v"] = Sqrt[m["V"]];
     m];
 
-(*  hep-ph/9807501 by T. Ibrahim and P. Nath *)
+(* EDM/e in GeV^{-1}. 1406.0083 by T. Ibrahim, A. Itani, and P. Nath.
+   Note that the original reference, hep-ph/9807501, contains an error in the formulae
+   even after the erratum in PRDx60. *)
 ElectronEDM[p_]:=Module[
     {sm = p[SM], mssm = p[MSSM], ph = p[PHASE], m = GetMatrices[p],
      b = 3, Q = -1, T3 = -1/2, a0, b0, c0,
      diag, u, v, x, d, ke, Gammae, Etae, chargino, neutralino, prefactor,
-     A=2(3-#+2Log[#]/(1-#))/(1-#)^2&, B=(1+#+2# Log[#]/(1-#))/(2(#-1)^2)&},
+     A=(3-#+2Log[#]/(1-#))/(1-#)^2/2&, B=(1+#+2# Log[#]/(1-#))/(2(#-1)^2)&},
     {a0, b0, c0} = {-Sqrt[2]sm["tw"](Q-T3), -Sqrt[2]T3, Sqrt[2]sm["tw"]Q};
     {u, v, x, d} = {m["UMIX"], m["VMIX"], Conjugate[Transpose[m["NMIX"]]], Conjugate[Transpose[m["STAUMIX",1]]]};
     ke=(sm["me"]Exp[-I ph["vd"]])/(Sqrt[2]sm["mW"]Cos[mssm["beta"]]);
