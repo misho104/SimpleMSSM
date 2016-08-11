@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-10 19:34:16 misho> *)
+(* Time-Stamp: <2016-08-11 15:36:12> *)
 
 (* :Context: MSSMgm2` *)
 
@@ -127,11 +127,24 @@ PrintMassMatrices[params_] := Module[{},
 ]
 
 (*Full Method*)
+N1[x_] /; Abs[x-1] < 2*^-2 :=  (1/2) + (1-x)/5 + (1-x)^2/10
+N2[x_] /; Abs[x-1] < 2*^-2 :=  (1/3) + (1-x)/6 + (1-x)^2/10
+C1[x_] /; Abs[x-1] < 2*^-2 :=  (1/2) + (1-x)*(3/10) + (1-x)^2/5
+C2[x_] /; Abs[x-1] < 2*^-2 := -(2/3) - (1-x)/2 - (1-x)^2 * (2/5)
+dN2[x_] /; Abs[x-1] < 2*^-2 := -(1/6) - (1-x)/5 - (1-x)^2/5
+dC2[x_] /; Abs[x-1] < 2*^-2 := (1/2) + (1-x)*(4/5) + (1-x)^2
+ddN2[x_] /; Abs[x-1] < 2*^-2 := 1/5 - 2/5 (-1 + x) + 4/7 (-1 + x)^2
+ddC2[x_] /; Abs[x-1] < 2*^-2 := -(4/5) + 2 (-1 + x) - 24/7 (-1 + x)^2
 
-N1[x_]:=(1-6x+3x^2+2x^3-6x^2 Log[x])/(1-x)^4
-N2[x_]:=(1-x^2+2x Log[x])/(1-x)^3
-C1[x_]:=(2+3x-6x^2+x^3+6x Log[x])/(1-x)^4
-C2[x_]:=(3-4x+x^2+2Log[x])/(1-x)^3
+N1[x_]  := (1-6x+3x^2+2x^3-6x^2 Log[x])/(1-x)^4
+N2[x_]  := (1-x^2+2x Log[x])/(1-x)^3
+C1[x_]  := (2+3x-6x^2+x^3+6x Log[x])/(1-x)^4
+C2[x_]  := (3-4x+x^2+2Log[x])/(1-x)^3
+dN2[x_] := (5 - 4 x - x^2 + 2 Log[x] + 4 x Log[x]) / (1-x)^4
+dC2[x_] := (2 + 3 x - 6 x^2 + x^3 + 6 x Log[x]) / (x (1 - x)^4)
+ddN2[x_] := (2 (-1 - 9 x + 9 x^2 + x^3 - 6 x Log[x] - 6 x^2 Log[x]))/((-1 + x)^5 x)
+ddC2[x_] := -((2 (-1 + 8 x - 8 x^3 + x^4 + 12 x^2 Log[x]))/((-1 + x)^5 x^2))
+
 a\[Mu]NEUTsub[MMU_, MCHI_, GL_, GR_]:=1/(16\[Pi]^2) (-Re[GL Conjugate[GR]] (m\[Mu] MCHI)/MMU^2 N2[MCHI^2/MMU^2]-(Abs[GL]^2+Abs[GR]^2)/6 m\[Mu]^2/MMU^2 N1[MCHI^2/MMU^2])/.values
 a\[Mu]CHARsub[MMU_, MCHI_, GL_, GR_]:=1/(16\[Pi]^2) (-Re[GL Conjugate[GR]] (m\[Mu] MCHI)/MMU^2 C2[MCHI^2/MMU^2]+(Abs[GL]^2+Abs[GR]^2)/6 m\[Mu]^2/MMU^2 C1[MCHI^2/MMU^2])/.values
 a\[Mu]NN[y\[Mu]MSSM_, Msmu_, Mneut_, bino_, wino_, higgsino_, \[Mu]L_, \[Mu]R_]:=a\[Mu]NEUTsub[Msmu,Mneut,{Conjugate[(gY bino +gW wino)/Sqrt[2]], -Conjugate[higgsino] y\[Mu]MSSM}.{\[Mu]L,\[Mu]R},{-higgsino y\[Mu]MSSM,-Sqrt[2]gY bino}.{\[Mu]L,\[Mu]R}]
@@ -155,9 +168,10 @@ a\[Mu]MSSMt[params__] := Total/@a\[Mu]MSSM[params]//Total;
 (* ::Text:: *)
 (*Mass Insertion Method*)
 
-
-Fa[x_,y_]:= (C2[x]-C2[y])/(2(x-y))
-Fb[x_,y_]:=-(N2[x]-N2[y])/(2(x-y))
+Fa[x_, y_] /; Abs[x-y] < 5*^-3 := dC2[x]/2    + ddC2[x] (y-x) / 4
+Fb[x_, y_] /; Abs[x-y] < 5*^-3 := dN2[x]/(-2) + ddN2[x] (y-x) / (-4)
+Fa[x_,y_] := (C2[x]-C2[y])/(2(x-y))
+Fb[x_,y_] := -(N2[x]-N2[y])/(2(x-y))
 F1[M1_,M2_,tb_,\[Mu]_,smuL_,smuR_,snumu_]:=  gW^2/( 8\[Pi]^2) (m\[Mu]^2 M2 \[Mu] tb)/snumu^4 Fa[  M2^2/snumu^2,    \[Mu]^2/snumu^2]//.values
 F2[M1_,M2_,tb_,\[Mu]_,smuL_,smuR_,snumu_]:=  gY^2/( 8\[Pi]^2) (m\[Mu]^2    \[Mu] tb)/M1^3    Fb[smuL^2/   M1^2, smuR^2/   M1^2]//.values
 F3[M1_,M2_,tb_,\[Mu]_,smuL_,smuR_,snumu_]:=  gY^2/(16\[Pi]^2) (m\[Mu]^2 M1 \[Mu] tb)/smuL^4  Fb[  M1^2/ smuL^2,    \[Mu]^2/ smuL^2]//.values
