@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-29 19:19:39 misho> *)
+(* Time-Stamp: <2016-08-23 16:16:10> *)
 
 (* :Context: SimpleMSSM` *)
 
@@ -70,6 +70,7 @@ Remove[F, T, B, L, X];
 
 Begin["`Private`"];
 
+$PackageDirectory = DirectoryName[$InputFileName];
 
 (* Neutralino mass diagonalization : N s.t. Diag = N^* M N^dagger *)
 AutonneTakagi[m0_] := Module[{v, p, x, m = SetPrecision[N[m0, 30], 30], $MinPrecision = 30},

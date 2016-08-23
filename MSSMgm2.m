@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2016-08-11 15:36:12> *)
+(* Time-Stamp: <2016-08-23 16:33:36> *)
 
 (* :Context: MSSMgm2` *)
 
@@ -50,9 +50,13 @@ a\[Mu]MSSMitSLHA::usage = "SLHA version of a\[Mu]MSSMit";
 
 a\[Mu]MSSMSLHA::usage   = "SLHA version of a\[Mu]MSSM";
 
+a\[Mu]MSSMtSLHA::usage   = "SLHA version of a\[Mu]MSSMt";
+
+LoadSLHAPackage::usage = "Load SLHA package";
+
 (* Error messages *)
 
-GetSoftParams::SLHAnotloaded = "SLHA module not loaded.";
+GetSoftParams::SLHAnotloaded = "SLHA module cannot loaded.";
 
 (* Other messages *)
 
@@ -61,6 +65,8 @@ Protect[m\[Mu], MZ, MW, \[Theta]W, gY, gW, y\[Mu]];
 Protect[M1, M2, tb, \[Mu], MsmuL, MsmuR, A\[Mu], Msnumu];
 
 Begin["`Private`"];
+
+$PackageDirectory = DirectoryName[$InputFileName];
 
 values={
   m\[Mu] ->  0.105658367,
@@ -185,15 +191,25 @@ a\[Mu]MSSMit[params__]:=Total[a\[Mu]MSSMi[params]]
 
 (* ::Text:: *)
 (*With SLHA package*)
+LoadSLHAPackage[] := If[Not[MemberQ[$ContextPath, "SLHA`"]],
+  Needs["SLHA`", FileNameJoin[{$PackageDirectory,"vendor","slha-mathematica","SLHA.m"}]];
+  If[Not[MemberQ[$ContextPath, "SLHA`"]], Message[GetSoftParams::SLHAnotloaded];Abort[]]];
 
-
-GetSoftParams[slha_]:=If[MemberQ[$ContextPath,"SLHA`"],
-  { M1->GetData[slha,"MSOFT",1],M2->GetData[slha,"MSOFT",2],tb->GetData[slha,"HMIX",2],\[Mu]->GetData[slha,"HMIX",1],
-    MsmuL->GetData[slha,"MASS",1000013],MsmuR->GetData[slha,"MASS",2000013],Msnumu->GetData[slha,"MASS",1000014],A\[Mu]->Data[slha,"AE",2,2]},
-  Message[GetSoftParams::SLHAnotloaded];Abort[]];
+GetSoftParams[slha_]:=Module[{},
+  LoadSLHAPackage[];
+  { M1->slha["MSOFT"][1],
+    M2->slha["MSOFT"][2],
+    tb->slha["HMIX"][2],
+    \[Mu]->slha["HMIX"][1],
+    MsmuL->slha["MASS"][1000013],
+    MsmuR->slha["MASS"][2000013],
+    Msnumu->slha["MASS"][1000014],
+    A\[Mu]->slha["AE"][2,2]
+  }];
 a\[Mu]MSSMiSLHA[slha_]:=a\[Mu]MSSMi[GetSoftParams[slha]];
 a\[Mu]MSSMitSLHA[slha_]:=a\[Mu]MSSMit[GetSoftParams[slha]];
 a\[Mu]MSSMSLHA[slha_]:=a\[Mu]MSSM[Replace[GetSoftParams[slha],(A\[Mu]->Null)->(A\[Mu]->0),{1}]];
+a\[Mu]MSSMtSLHA[slha_]:=a\[Mu]MSSMt[Replace[GetSoftParams[slha],(A\[Mu]->Null)->(A\[Mu]->0),{1}]];
 
 
 (* ::Text:: *)

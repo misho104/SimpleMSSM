@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* Time-Stamp: <2015-01-29 19:24:46 misho> *)
+(* Time-Stamp: <2016-08-23 16:36:17> *)
 
 (* :Context: SimpleMSSM` *)
 
@@ -30,8 +30,8 @@
 
 
 
-Needs["SLHA`", FileNameJoin[{DirectoryName[$Input],"vendor","slha-mathematica","SLHA.m"}]];
-Needs["SimpleMSSM`MSSM`", FileNameJoin[{DirectoryName[$Input],"MSSM.m"}]];
+Needs["SLHA`", FileNameJoin[{DirectoryName[$InputFileName],"vendor","slha-mathematica","SLHA.m"}]];
+Needs["SimpleMSSM`MSSM`", FileNameJoin[{DirectoryName[$InputFileName],"MSSM.m"}]];
 
 BeginPackage["SimpleMSSM`MSSMedm`"];
 
@@ -64,6 +64,7 @@ GetMatrices::NegativeSfermionMass = "Lighter sfermion mass becomes negative. The
 
 Begin["`Private`"];
 
+$PackageDirectory = DirectoryName[$InputFileName];
 
 IfMissing=SLHA`IfMissing;
 
