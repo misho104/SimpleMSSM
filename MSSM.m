@@ -81,13 +81,13 @@ AutonneTakagi[m0_] := Module[{v, p, x, m = SetPrecision[N[m0, 30], 30], $MinPrec
 
 NeutralinoPositiveDiagonalize[m_] := Module[{v, x},
   {v, x} = AutonneTakagi[m];
-  {v, Conjugate[x]} // Chop];
+  {v, Conjugate[x]} // Chop // N];
 
 NeutralinoRealDiagonalize[m_] := Module[{v, x},
   {v, x} = AutonneTakagi[m];
   (* Remove complex phase allowing negative mass *)
   Do[If[Re[x[[i,1]]]==Re[x[[i,2]]]==Re[x[[i,3]]]==Re[x[[i,4]]]==0, x[[i]] = x[[i]] * I], {i, 1, 4}];
-  {x.m.Transpose[x], Conjugate[x] } // Chop];
+  {x.m.Transpose[x], Conjugate[x] } // Chop // N];
 
 (* Chargino mass diagonalization : (chi-)^T M (chi+),  (U, V) s.t. Diag = U^* M V^dagger *)
 CharginoDiagonalize[m0_] := Module[{u, d, v, m = SetPrecision[N[m0, 30], 30], $MinPrecision = 30},
@@ -95,7 +95,7 @@ CharginoDiagonalize[m0_] := Module[{u, d, v, m = SetPrecision[N[m0, 30], 30], $M
   {u, v} = Transpose[Reverse[Transpose[#]]] & /@ {u, v}; (*Now Diag ascending*)
   u = Transpose[u];
   v = Transpose[Conjugate[v]];
-  {Conjugate[u].m.Conjugate[Transpose[v]], u, v} // Chop];
+  {Conjugate[u].m.Conjugate[Transpose[v]], u, v} // Chop // N];
 
 (* Sfermion mass diagonalization : {{f1}, {f2}} = F_ij . {{fL}, {fR}}, or Diag = F M F^dagger *)
 SfermionDiagonalize[m0_] := Module[{a, b, f, diag, m = SetPrecision[N[m0, 30], 30], $MinPrecision = 30},
@@ -105,7 +105,7 @@ SfermionDiagonalize[m0_] := Module[{a, b, f, diag, m = SetPrecision[N[m0, 30], 3
         {-Sin[a] Exp[-I b], Cos[a]} };
   diag = f.m.Conjugate[Transpose[f]];
   If[Re[diag[[1, 1]] - diag[[2, 2]]] > 0, f = Reverse[f]];
-  {f.m.Conjugate[Transpose[f]], f} // Chop]
+  {f.m.Conjugate[Transpose[f]], f} // Chop // N]
 
 NeutralinoMass[M1_, M2_, tb_, mu_, mz_, sw_] := With[
     {sb = Sin[ArcTan[tb]], cb = Cos[ArcTan[tb]], cw = Sqrt[1-sw^2]},
