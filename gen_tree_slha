@@ -1,7 +1,10 @@
 #!MathematicaScript -script
 
-Needs["SLHA`",                FileNameJoin[{Directory[], DirectoryName[$ScriptCommandLine[[1]]], "vendor", "slha-mathematica", "SLHA.m"}]];
-Needs["SimpleMSSM`TreeSpec`", FileNameJoin[{Directory[], DirectoryName[$ScriptCommandLine[[1]]], "TreeSpec.m"}]];
+(* Not sure how to know this file name properly...
+   $InputFileName, or Directory[] <> $ScriptCommandLine[[1]], or... *)
+   
+Needs["SLHA`",                FileNameJoin[{DirectoryName[$InputFileName], "vendor", "slha-mathematica", "SLHA.m"}]];
+Needs["SimpleMSSM`TreeSpec`", FileNameJoin[{DirectoryName[$InputFileName], "TreeSpec.m"}]];
 
 Global::InvalidArguments = "Input/Output file not specified. (Usage: " <> $ScriptCommandLine[[1]] <> " inputfile outputfile)";
 Global::FileNotFound = "File `1` not found.";
